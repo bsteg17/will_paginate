@@ -142,7 +142,7 @@ module WillPaginate
     def page_entries_info(collection, options = {})
       model = options[:model]
       model = collection.first.class unless model or collection.empty?
-      model ||= 'entry'.freeze
+      model ||= 'entry'
       model_key = if model.respond_to? :model_name
                     model.model_name.i18n_key  # ActiveModel::Naming
                   else
@@ -150,21 +150,21 @@ module WillPaginate
                   end
 
       if options.fetch(:html, true)
-        b, eb = '<b>'.freeze, '</b>'.freeze
-        sp = '&nbsp;'.freeze
-        html_key = '_html'.freeze
+        b, eb = '<b>', '</b>'
+        sp = '&nbsp;'
+        html_key = '_html'
       else
-        b = eb = html_key = ''.freeze
-        sp = ' '.freeze
+        b = eb = html_key = ''
+        sp = ' '
       end
 
       model_count = collection.total_pages > 1 ? 5 : collection.size
-      defaults = ["models.#{model_key}".freeze].freeze
+      defaults = ["models.#{model_key}"]
       defaults << Proc.new { |_, opts|
         if model.respond_to? :model_name
           model.model_name.human(:count => opts[:count])
         else
-          name = model_key.to_s.tr('_'.freeze, ' '.freeze)
+          name = model_key.to_s.tr('_', ' ')
           raise "can't pluralize model name: #{model.inspect}" unless name.respond_to? :pluralize
           opts[:count] == 1 ? name : name.pluralize
         end
